@@ -41,8 +41,16 @@ TEST(InitializationTest, SizeAndValueConstructor) {
 	for (unsigned i = 0; i < vektor1.size(); ++i)
 		EXPECT_EQ(vektor1[i], -1);
 
-	//EXPECT_DEATH(Vektor vektor2(-10, -10), ".*");
+	EXPECT_DEATH(Vektor vektor2(-10, -10), ".*");
+}
 
+TEST(InitializationTest, CopyConstructor) {
+	Vektor vektor1(10, 10);
+	Vektor vektor2(vektor1);
+	
+	EXPECT_EQ(vektor1.size(), vektor2.size());
+	EXPECT_EQ(vektor1.capacity(), vektor2.capacity());
+	EXPECT_TRUE(vektor1 == vektor2);
 }
 
 TEST(AccesorsTest, GetFirstElementEmpty) {
@@ -68,7 +76,7 @@ TEST(AccessorsTest, GetLastElementEmpty) {
 
 }
 
-TEST(AccessorsTest, IndexingEmptyVektor) {
+TEST(IndexingOperatorTest, IndexingEmptyVektor) {
 	Vektor vektor;
 	EXPECT_DEATH(vektor[0], ".*");
 	EXPECT_DEATH(vektor[20], ".*");
@@ -78,7 +86,7 @@ TEST(AccessorsTest, IndexingEmptyVektor) {
 	EXPECT_DEATH(vektor1[20], ".*");
 }
 
-TEST(AccessorsTest, IndexingNegativeIndex) {
+TEST(IndexingOperatorTest, IndexingNegativeIndex) {
 	Vektor vektor;
 	EXPECT_DEATH(vektor[-1], ".*");
 	EXPECT_DEATH(vektor[-10], ".*");
@@ -88,7 +96,7 @@ TEST(AccessorsTest, IndexingNegativeIndex) {
 	EXPECT_DEATH(vektor1[-11], ".*");
 }
 
-TEST(AccessorsTest, IndexingOutOfBounds) {
+TEST(IndexingOperatorTest, IndexingOutOfBounds) {
 	Vektor vektor;
 	EXPECT_DEATH(vektor[1], ".*");
 	EXPECT_DEATH(vektor[10], ".*");
@@ -98,7 +106,7 @@ TEST(AccessorsTest, IndexingOutOfBounds) {
 	EXPECT_DEATH(vektor1[100], ".*");
 }
 
-TEST(AccessorsTest, IndexingValidIndex) {
+TEST(IndexingOperatorTest, IndexingValidIndex) {
 	Vektor vektor(10, 10);
 	EXPECT_EQ(vektor[0], 10);
 	EXPECT_EQ(vektor[9], 10);
@@ -107,8 +115,25 @@ TEST(AccessorsTest, IndexingValidIndex) {
 	EXPECT_EQ(vektor1[0], 0);
 
 	Vektor vektor2(1, 10);
-	EXPECT_EQ(vektor1[0], 10);
+	EXPECT_EQ(vektor2[0], 10);
 }
+
+TEST(EqualityOperatorTest, SameVektor) {
+	Vektor vektor1;
+	Vektor vektor2;
+	EXPECT_TRUE(vektor1 == vektor1);
+	EXPECT_TRUE(vektor1 == vektor2);
+
+	Vektor vektor3(10);
+	Vektor vektor4(10);
+	EXPECT_TRUE(vektor3 == vektor3);
+	EXPECT_TRUE(vektor3 == vektor4);
+	
+	Vektor vektor5(100, -1);
+	Vektor vektor6(100, -1);
+	EXPECT_TRUE(vektor5 == vektor6);
+}
+
 
 
 
